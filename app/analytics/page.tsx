@@ -215,7 +215,7 @@ export default function AnalyticsPage() {
                   fontSize: "12px",
                   boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
                 }}
-                formatter={(value: number) => [`${value} days`, "Avg time"]}
+                formatter={(value) => [`${value ?? 0} days`, "Avg time"]}
               />
               <Bar dataKey="days" radius={[0, 4, 4, 0]}>
                 {avgDaysData.map((entry) => (
@@ -244,9 +244,7 @@ export default function AnalyticsPage() {
                 outerRadius={85}
                 paddingAngle={3}
                 dataKey="value"
-                label={({ name, percent }: { name: string; percent: number }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
+                label={false}
                 labelLine={false}
               >
                 {sourceData.map((_, index) => (
