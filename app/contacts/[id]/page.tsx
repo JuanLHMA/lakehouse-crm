@@ -47,6 +47,10 @@ export default function ContactDetailPage() {
   const [noteText, setNoteText] = useState("");
   const [logType, setLogType] = useState<"call" | "email" | "note">("note");
   const [changingPhase, setChangingPhase] = useState(false);
+  const [showSendEmail, setShowSendEmail] = useState(false);
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailBody, setEmailBody] = useState("");
+  const [sendingEmail, setSendingEmail] = useState(false);
 
   const loadData = useCallback(async () => {
     try {
@@ -127,6 +131,33 @@ export default function ContactDetailPage() {
       await loadData();
     } catch {
       showToast("Failed to log activity", "error");
+    }
+  };
+
+  const handleSendEmail = async () => {
+    if (!emailSubject.trim() || !emailBody.trim() || !lead) return;
+    setSendingEmail(true);
+    try {
+      const res = await fetch("/api/email/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: lead.email,
+          subject: emailSubject.trim(),
+          html: emailBody.trim().replace(/\n/g, "<br>"),
+          leadId: id,
+        }),
+      });
+      if (!res.ok) throw new Error("Send failed");
+      showToast("Email sent!", "success");
+      setEmailSubject("");
+      setEmailBody("");
+      setShowSendEmail(false);
+      await loadData();
+    } catch {
+      showToast("Failed to send email", "error");
+    } finally {
+      setSendingEmail(false);
     }
   };
 
@@ -365,13 +396,14 @@ export default function ContactDetailPage() {
             <div className="flex items-center gap-2 mb-3">
               <h3 className="text-sm font-bold text-gray-900">Log Activity</h3>
             </div>
-            <div className="flex gap-2 mb-3">
+            <div className="flex flex-wrap gap-2 mb-3">
               {(["call", "email", "note"] as const).map((type) => (
                 <button
                   key={type}
                   onClick={() => {
                     setLogType(type);
                     setShowAddNote(true);
+                    setShowSendEmail(false);
                   }}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     showAddNote && logType === type
@@ -385,6 +417,20 @@ export default function ContactDetailPage() {
                   {type === "call" ? "Log Call" : type === "email" ? "Log Email" : "Add Note"}
                 </button>
               ))}
+              <button
+                onClick={() => {
+                  setShowSendEmail(true);
+                  setShowAddNote(false);
+                }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                  showSendEmail
+                    ? "bg-[#DC143C] text-white"
+                    : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                }`}
+              >
+                <span>📧</span>
+                Send Email
+              </button>
             </div>
 
             {showAddNote && (
@@ -415,6 +461,48 @@ export default function ContactDetailPage() {
                     onClick={() => {
                       setShowAddNote(false);
                       setNoteText("");
+                    }}
+                    className="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {showSendEmail && (
+              <div className="space-y-2">
+                <div className="text-xs text-gray-500 mb-1">
+                  To: <span className="font-medium text-gray-700">{lead.email}</span>
+                </div>
+                <input
+                  type="text"
+                  value={emailSubject}
+                  onChange={(e) => setEmailSubject(e.target.value)}
+                  placeholder="Subject"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                  autoFocus
+                />
+                <textarea
+                  value={emailBody}
+                  onChange={(e) => setEmailBody(e.target.value)}
+                  placeholder="Email body..."
+                  rows={5}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleSendEmail}
+                    disabled={!emailSubject.trim() || !emailBody.trim() || sendingEmail}
+                    className="px-4 py-2 bg-[#DC143C] text-white rounded-lg text-xs font-semibold hover:bg-[#B01030] transition-colors disabled:opacity-50"
+                  >
+                    {sendingEmail ? "Sending..." : "Send"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowSendEmail(false);
+                      setEmailSubject("");
+                      setEmailBody("");
                     }}
                     className="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors"
                   >

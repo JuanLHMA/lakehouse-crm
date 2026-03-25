@@ -1,21 +1,31 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChevronDown, ChevronRight, Mail, Clock } from "lucide-react";
+import { ChevronDown, ChevronRight, Mail, Clock, Send } from "lucide-react";
 import ProtectedLayout from "@/components/ProtectedLayout";
 import PhaseTag from "@/components/PhaseTag";
+import { useToast } from "@/components/Toast";
 import type { Sequence } from "@/lib/types";
+import type { Lead } from "@/lib/types";
 
 export default function SequencesPage() {
+  const { showToast } = useToast();
   const [sequences, setSequences] = useState<Sequence[]>([]);
+  const [leads, setLeads] = useState<Lead[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [sendModal, setSendModal] = useState<{ sequenceId: string; sequenceName: string } | null>(null);
+  const [selectedLeadId, setSelectedLeadId] = useState("");
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
-    fetch("/api/sequences")
-      .then((r) => r.json() as Promise<Sequence[]>)
-      .then((data) => {
-        setSequences(data);
+    Promise.all([
+      fetch("/api/sequences").then((r) => r.json() as Promise<Sequence[]>),
+      fetch("/api/leads").then((r) => r.json() as Promise<Lead[]>),
+    ])
+      .then(([seqs, ldList]) => {
+        setSequences(seqs);
+        setLeads(ldList);
         setLoading(false);
       })
       .catch((err) => {
@@ -28,8 +38,65 @@ export default function SequencesPage() {
     setExpanded((prev) => (prev === id ? null : id));
   };
 
+  const handleSendToLead = async () => {
+    if (!sendModal || !selectedLeadId) return;
+    setSending(true);
+    try {
+      const res = await fetch("/api/email/sequence", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leadId: selectedLeadId, sequenceId: sendModal.sequenceId }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      showToast(`Sequence "${sendModal.sequenceName}" triggered!`, "success");
+      setSendModal(null);
+      setSelectedLeadId("");
+    } catch {
+      showToast("Failed to trigger sequence", "error");
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <ProtectedLayout>
+      {/* Send to Lead Modal */}
+      {sendModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-xl p-6 w-full max-w-sm mx-4">
+            <h2 className="text-base font-bold text-gray-900 mb-1">Send Sequence to Lead</h2>
+            <p className="text-sm text-gray-500 mb-4">{sendModal.sequenceName}</p>
+            <select
+              value={selectedLeadId}
+              onChange={(e) => setSelectedLeadId(e.target.value)}
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+            >
+              <option value="">Select a lead…</option>
+              {leads.map((l) => (
+                <option key={l.id} value={l.id}>
+                  {l.name} — {l.email}
+                </option>
+              ))}
+            </select>
+            <div className="flex gap-2">
+              <button
+                onClick={handleSendToLead}
+                disabled={!selectedLeadId || sending}
+                className="flex-1 px-4 py-2 bg-[#DC143C] text-white rounded-lg text-sm font-semibold hover:bg-[#B01030] transition-colors disabled:opacity-50"
+              >
+                {sending ? "Sending..." : "Send"}
+              </button>
+              <button
+                onClick={() => { setSendModal(null); setSelectedLeadId(""); }}
+                className="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Email Sequences</h1>
@@ -69,7 +136,18 @@ export default function SequencesPage() {
                       {seq.steps[seq.steps.length - 1].day} days total
                     </p>
                   </div>
-                  <div className="flex-shrink-0">
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSendModal({ sequenceId: seq.id, sequenceName: seq.name });
+                        setSelectedLeadId("");
+                      }}
+                      className="flex items-center gap-1 px-2.5 py-1.5 bg-[#DC143C]/10 text-[#DC143C] rounded-lg text-xs font-semibold hover:bg-[#DC143C]/20 transition-colors"
+                    >
+                      <Send className="w-3 h-3" />
+                      Send to Lead
+                    </button>
                     {isOpen ? (
                       <ChevronDown className="w-5 h-5 text-gray-400" />
                     ) : (
