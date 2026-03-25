@@ -1,0 +1,178 @@
+[
+  {
+    "id": "seq-1",
+    "phase": "assess",
+    "name": "Welcome Inquiry Sequence",
+    "steps": [
+      {
+        "day": 0,
+        "subject": "Welcome to Lakehouse Music Academy!",
+        "body": "Hi {{firstName}},\n\nThank you for your interest in Lakehouse Music Academy! We're so excited you reached out.\n\nWe offer private lessons in guitar, drums, bass, vocals, keys, violin, and ukulele for students of all ages and experience levels.\n\nI'd love to learn a bit more about you. What instrument are you interested in, and what are your musical goals?\n\nLooking forward to connecting!\n\nWarmly,\n{{assignedTo}}\nLakehouse Music Academy"
+      },
+      {
+        "day": 2,
+        "subject": "Ready to find your perfect instructor?",
+        "body": "Hi {{firstName}},\n\nJust checking in from Lakehouse! We have an amazing team of instructors, each with unique styles and specialties.\n\nWhether you're a complete beginner or looking to level up your skills, we'll match you with the perfect teacher.\n\nCan we schedule a quick 10-minute call to find your ideal fit?\n\nBest,\n{{assignedTo}}\nLakehouse Music Academy"
+      },
+      {
+        "day": 5,
+        "subject": "Claim your free trial lesson",
+        "body": "Hi {{firstName}},\n\nWe'd love to offer you a complimentary trial lesson — no strings attached (unless you want them on a guitar!).\n\nThis gives you a chance to meet your potential instructor, experience our teaching style, and see our studio space.\n\nReply to this email or call us at (732) 555-0100 to schedule your free trial.\n\nHope to see you soon!\n{{assignedTo}}\nLakehouse Music Academy"
+      }
+    ]
+  },
+  {
+    "id": "seq-2",
+    "phase": "admit",
+    "name": "Trial Lesson Follow-Up Sequence",
+    "steps": [
+      {
+        "day": 0,
+        "subject": "How was your trial lesson?",
+        "body": "Hi {{firstName}},\n\nWe hope your trial lesson was everything you hoped for! It was wonderful having you at Lakehouse.\n\nWe'd love to hear your feedback — what did you enjoy most? Is there anything you'd like to explore further?\n\nWe're ready to help you take the next step on your musical journey.\n\nWarmly,\n{{assignedTo}}"
+      },
+      {
+        "day": 1,
+        "subject": "Your instructor loved meeting you!",
+        "body": "Hi {{firstName}},\n\nYour instructor had a fantastic time with you and wanted me to pass along some great words!\n\nThey believe you have real potential and are excited about your musical goals. They'd love to work with you regularly.\n\nShall we get you set up with a recurring lesson schedule?\n\nBest,\n{{assignedTo}}"
+      },
+      {
+        "day": 3,
+        "subject": "Special enrollment offer just for you",
+        "body": "Hi {{firstName}},\n\nWe want to make it easy for you to start your musical journey with us.\n\nAs a follow-up to your trial lesson, we're offering your first month at 20% off when you enroll this week.\n\nSpots fill up quickly — reply today to lock in your schedule!\n\n{{assignedTo}}\nLakehouse Music Academy"
+      }
+    ]
+  },
+  {
+    "id": "seq-3",
+    "phase": "affirm",
+    "name": "Enrollment Confirmation Sequence",
+    "steps": [
+      {
+        "day": 0,
+        "subject": "You're officially a Lakehouse student!",
+        "body": "Hi {{firstName}},\n\nCongratulations and welcome to the Lakehouse family! We're so thrilled to have you.\n\nHere's what happens next:\n- Your first lesson is scheduled for {{nextLessonDate}}\n- We'll send you a studio orientation guide shortly\n- Your instructor will reach out before your first lesson\n\nGet ready to make some music!\n\n{{assignedTo}}\nLakehouse Music Academy"
+      },
+      {
+        "day": 1,
+        "subject": "Your Lakehouse Student Guide",
+        "body": "Hi {{firstName}},\n\nWelcome again! Here's everything you need to know before your first official lesson:\n\n📍 LOCATION: 123 Harmony Lane, Suite 200\n🅿️ PARKING: Free lot behind the building\n📱 CONTACT: (732) 555-0100\n⏰ ARRIVAL: Please arrive 5 minutes early\n\nWhat to bring: Your instrument if you have one, a notebook, and your enthusiasm!\n\nSee you soon,\n{{assignedTo}}"
+      },
+      {
+        "day": 5,
+        "subject": "How are you feeling about your upcoming lesson?",
+        "body": "Hi {{firstName}},\n\nYour first official lesson is coming up soon! Are you feeling excited?\n\nIt's completely normal to have butterflies. Remember, your instructor is here to meet you where you are and help you grow at your own pace.\n\nAny questions before you come in? We're always here to help!\n\n{{assignedTo}}\nLakehouse Music Academy"
+      }
+    ]
+  },
+  {
+    "id": "seq-4",
+    "phase": "activate",
+    "name": "First Lesson Success Sequence",
+    "steps": [
+      {
+        "day": 0,
+        "subject": "How was your first lesson?",
+        "body": "Hi {{firstName}},\n\nYou did it — first lesson complete! How are you feeling?\n\nWe'd love to hear your initial impressions. Was the lesson what you expected? Is there anything you'd like more or less of?\n\nYour feedback helps us make your experience perfect.\n\n{{assignedTo}}\nLakehouse Music Academy"
+      },
+      {
+        "day": 3,
+        "subject": "Practice tips for your first week",
+        "body": "Hi {{firstName}},\n\nHere are some tips from your instructor to help you make the most of your practice this week:\n\n✅ Practice for 10-15 minutes daily (consistency beats long sessions)\n✅ Focus on what felt challenging in your lesson\n✅ Film yourself playing — you'll be amazed at your progress!\n✅ Have fun with it!\n\nSee you at your next lesson!\n{{assignedTo}}"
+      },
+      {
+        "day": 7,
+        "subject": "Your first week check-in",
+        "body": "Hi {{firstName}},\n\nOne week down — you're officially on your way! How has your practice been going?\n\nDon't worry if it's been tough. Every musician started exactly where you are now.\n\nYour instructor is proud of your commitment and can't wait to see your progress at the next lesson.\n\nKeep it up!\n{{assignedTo}}"
+      }
+    ]
+  },
+  {
+    "id": "seq-5",
+    "phase": "acclimate",
+    "name": "Early Student Engagement Sequence",
+    "steps": [
+      {
+        "day": 0,
+        "subject": "30 days of Lakehouse — how's it going?",
+        "body": "Hi {{firstName}},\n\nCan you believe it's been a month? You've come so far!\n\nWe'd love to schedule a quick check-in call to talk about your progress, goals, and how we can support you even better.\n\nAlso — have you considered joining our monthly student jam sessions? They're a great way to meet other students!\n\n{{assignedTo}}"
+      },
+      {
+        "day": 7,
+        "subject": "Upcoming events you might enjoy",
+        "body": "Hi {{firstName}},\n\nDid you know Lakehouse hosts regular events for students?\n\n🎵 Monthly Jam Sessions — casual, fun, no pressure\n🎤 Recitals — showcase your progress to family and friends\n🎸 Open Mics — perform for an audience\n📚 Music Theory Workshops — deepen your understanding\n\nThese are optional but so rewarding. Ask your instructor about upcoming dates!\n\n{{assignedTo}}"
+      },
+      {
+        "day": 21,
+        "subject": "How are you feeling about your progress?",
+        "body": "Hi {{firstName}},\n\nWe're checking in to see how things are going! Learning an instrument has its ups and downs, and we want to make sure you're feeling supported.\n\nIf anything feels difficult, don't hesitate to tell your instructor or reach out to me directly. We're here for you.\n\nLooking forward to hearing all about your musical journey!\n\n{{assignedTo}}\nLakehouse Music Academy"
+      }
+    ]
+  },
+  {
+    "id": "seq-6",
+    "phase": "accomplish",
+    "name": "Achievement & Recital Sequence",
+    "steps": [
+      {
+        "day": 0,
+        "subject": "You've reached a major milestone!",
+        "body": "Hi {{firstName}},\n\nWe want to take a moment to celebrate your incredible progress. You've worked so hard and it truly shows!\n\nYour instructor has noted significant growth in your skills. Be proud of yourself — this doesn't happen without dedication.\n\nHave you thought about performing at our next recital? We'd love to showcase your talent!\n\n{{assignedTo}}"
+      },
+      {
+        "day": 5,
+        "subject": "Spring Recital — will you be performing?",
+        "body": "Hi {{firstName}},\n\nOur Spring Recital is coming up and we'd love for you to participate!\n\nPerforming is one of the most rewarding experiences a musician can have. Your instructor believes you're ready, and so do we.\n\nSpots are limited — reply to confirm your spot by {{registrationDeadline}}.\n\nThis could be a defining moment in your musical journey!\n\n{{assignedTo}}"
+      },
+      {
+        "day": 14,
+        "subject": "Building on your success",
+        "body": "Hi {{firstName}},\n\nYou've accomplished so much at Lakehouse. We'd love to talk about what comes next for you musically.\n\nOptions to explore:\n- Advanced lessons with a specialist instructor\n- Theory courses to deepen your knowledge\n- Group ensemble classes\n- Songwriting workshops\n\nLet's schedule a goal-setting session with your instructor!\n\n{{assignedTo}}"
+      }
+    ]
+  },
+  {
+    "id": "seq-7",
+    "phase": "adopt",
+    "name": "Long-Term Student Retention Sequence",
+    "steps": [
+      {
+        "day": 0,
+        "subject": "One year of music — happy anniversary!",
+        "body": "Hi {{firstName}},\n\nHappy one-year anniversary at Lakehouse Music Academy! 🎉\n\nA year ago you walked through our doors, and look how far you've come. We are so proud to be part of your musical journey.\n\nAs a token of our appreciation, we'd love to offer you a complimentary lesson this month. Just reach out to schedule it!\n\nThank you for being part of the Lakehouse family.\n\n{{assignedTo}}"
+      },
+      {
+        "day": 7,
+        "subject": "Your musical journey — where to next?",
+        "body": "Hi {{firstName}},\n\nYou're one of our most dedicated students, and we want to make sure your goals are always front and center.\n\nHas anything changed in what you want to accomplish musically? Would you like to try a new genre, instrument, or teaching style?\n\nWe'd love to do a refresher goal-setting session — no extra charge!\n\n{{assignedTo}}"
+      },
+      {
+        "day": 30,
+        "subject": "Exclusive: Lakehouse Loyalty Program",
+        "body": "Hi {{firstName}},\n\nBecause you're one of our most loyal students, we'd like to invite you into our exclusive Loyalty Program.\n\nBenefits include:\n- Priority scheduling for popular instructors\n- First access to workshops and masterclasses\n- Annual lesson credit\n- Special recital features\n\nReply to learn more — we'd love to have you!\n\n{{assignedTo}}"
+      }
+    ]
+  },
+  {
+    "id": "seq-8",
+    "phase": "advocate",
+    "name": "Referral & Ambassador Sequence",
+    "steps": [
+      {
+        "day": 0,
+        "subject": "You're a Lakehouse legend — thank you!",
+        "body": "Hi {{firstName}},\n\nWe just wanted to take a moment to say THANK YOU. Your enthusiasm for Lakehouse — the referrals, the kind words, the social shares — means the world to us.\n\nYou're not just a student, you're part of the heart of this community.\n\nIs there anything we can do to support you and show our appreciation?\n\nWith gratitude,\n{{assignedTo}}"
+      },
+      {
+        "day": 14,
+        "subject": "Join our Referral Rewards program",
+        "body": "Hi {{firstName}},\n\nWe'd love to make your advocacy even more rewarding! Our Referral Rewards program gives you:\n\n- $50 lesson credit for every student you refer who enrolls\n- Special recognition at recitals and events\n- Invitation to our annual Advocates Appreciation dinner\n\nYou already do this out of love for music — we just want to say thank you in a tangible way!\n\n{{assignedTo}}"
+      },
+      {
+        "day": 30,
+        "subject": "Would you share your Lakehouse story?",
+        "body": "Hi {{firstName}},\n\nWould you be willing to share your Lakehouse story with prospective students?\n\nYour journey is genuinely inspiring, and a testimonial from you would mean so much to families considering joining us.\n\nIt could be a quick written quote, a short video, or just a Google review — whatever feels comfortable!\n\nThank you for everything you do for this community.\n\n{{assignedTo}}"
+      }
+    ]
+  }
+]
