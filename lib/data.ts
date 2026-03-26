@@ -4,7 +4,10 @@ import type { Lead, Activity, Sequence, AnalyticsData, Phase } from "./types";
 import { PHASES } from "./types";
 import { isOverdue } from "./utils";
 
-const redis = Redis.fromEnv();
+const redis = new Redis({
+  url: (process.env.UPSTASH_REDIS_REST_URL ?? "").trim(),
+  token: (process.env.UPSTASH_REDIS_REST_TOKEN ?? "").trim(),
+});
 
 const KEYS = {
   leads: "crm:leads",
@@ -154,10 +157,547 @@ export async function createActivity(data: Omit<Activity, "id" | "createdAt">): 
   return newActivity;
 }
 
+// Seed sequences for all 8 Coleman phases
+const SEED_SEQUENCES: Sequence[] = [
+  {
+    id: "seq-1",
+    phase: "assess",
+    name: "Lead Inquiry — Welcome Sequence",
+    steps: [
+      {
+        day: 0,
+        subject: "Welcome to Lakehouse Music Academy!",
+        body: `Hi {{firstName}},
+
+Thank you so much for reaching out to Lakehouse Music Academy — we're thrilled you found us!
+
+We're not your average music school. At Lakehouse, every student gets a personalized learning experience with hand-picked instructors who are as passionate about teaching as they are about music. Whether you're a complete beginner or a seasoned player looking to level up, we meet you exactly where you are.
+
+Here's what makes us different:
+🎸 Private lessons tailored to your goals and pace
+🎤 Programs for all ages — kids, teens, and adults
+🎵 Instruments: guitar, drums, bass, vocals, keys, violin, and ukulele
+🎪 The Big Gig — our flagship student showcase (it's epic)
+
+Ready to book your FREE trial lesson? Just reply to this email or visit our website to pick a time that works for you.
+
+We can't wait to be part of your musical journey!
+
+Warmly,
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 2,
+        subject: "What instrument speaks to you?",
+        body: `Hi {{firstName}},
+
+Just checking in from Lakehouse! I wanted to share a bit more about our programs so you can find your perfect fit.
+
+🎸 GUITAR — From pop and rock to fingerstyle and jazz. Ages 7+
+🥁 DRUMS — Full kit instruction, rhythm training, groove mastery. Ages 8+
+🎸 BASS — Groove-focused lessons for the backbone of every band. Ages 10+
+🎤 VOCALS — Technique, breath control, performance coaching. All ages
+🎹 KEYS — Classical foundations or contemporary styles. Ages 5+
+🎻 VIOLIN — Classical to fiddle, Suzuki-friendly. Ages 5+
+🪗 UKULELE — Fun, fast, and beginner-friendly. Perfect for all ages
+
+Every instructor at Lakehouse is carefully vetted — real musicians who know how to teach. We match you with the right fit, not just whoever's available.
+
+What instrument are you drawn to? Hit reply and let's chat!
+
+Best,
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 5,
+        subject: "See what our students are doing",
+        body: `Hi {{firstName}},
+
+We know picking a music school is a big decision, so we want to show you (not just tell you) what Lakehouse is all about.
+
+Here's what some of our families are saying:
+
+⭐ "My son started guitar with zero experience and performed at the Big Gig in just 6 months. I cried happy tears." — Maria R., guitar parent
+
+⭐ "I'm 42 and always wanted to play piano. Lakehouse made it feel possible. My instructor is incredible." — Ben C., adult student
+
+⭐ "The teachers genuinely care. They know my daughter's name, her goals, her favorite songs. It's a community." — the Patel family
+
+And the Big Gig? It's our signature student showcase — a real concert experience that gives students something to work toward and a moment they'll never forget.
+
+We'd love for your family to experience this. Book your free trial lesson and see for yourself.
+
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 7,
+        subject: "Your spot is waiting — last chance to book",
+        body: `Hi {{firstName}},
+
+I don't want to be a bother, but I also don't want you to miss out.
+
+We have a limited number of trial lesson slots available, and they tend to fill up fast — especially on evenings and weekends.
+
+If Lakehouse feels like the right fit, the easiest next step is a free, no-pressure trial lesson. You'll get to:
+✅ Meet your instructor one-on-one
+✅ Experience our teaching style firsthand
+✅ Ask all the questions you have
+✅ Leave with a personalized path forward
+
+No commitment required. If you love it, great — we'd love to have you. If it's not the right fit, no hard feelings.
+
+Ready to claim your spot? Just reply with a few times that work for you and we'll get it scheduled.
+
+Hope to see you soon!
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+    ],
+  },
+  {
+    id: "seq-2",
+    phase: "admit",
+    name: "Just Enrolled — Welcome to the Family",
+    steps: [
+      {
+        day: 0,
+        subject: "Welcome to the Lakehouse Family! 🎉",
+        body: `Hi {{firstName}},
+
+This is the email I love sending most — WELCOME TO LAKEHOUSE!
+
+You've made a wonderful decision, and we are so excited to have you with us. Here's what's coming up next:
+
+📋 WHAT TO EXPECT THIS WEEK:
+1. Your instructor will reach out to introduce themselves
+2. We'll send your student orientation guide
+3. You'll receive Canvas LMS login credentials (our student portal)
+4. Your first lesson is right around the corner!
+
+🎸 A NOTE BEFORE YOUR FIRST LESSON:
+Don't worry about being "ready." You don't need to know anything. You don't need to practice anything. Just show up with curiosity and enthusiasm — your instructor will take care of the rest.
+
+We're honored to be part of your musical journey. This is just the beginning.
+
+With excitement,
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 1,
+        subject: "Meet your instructor",
+        body: `Hi {{firstName}},
+
+We wanted to formally introduce you to your Lakehouse instructor!
+
+Your instructor, {{assignedTo}}, is one of our most dedicated teachers. They bring years of performance and teaching experience and a genuine love for helping students find their voice — literally and figuratively.
+
+Their teaching philosophy:
+🎯 Every student learns differently — lessons are always personalized
+🎵 Music should be fun, not a chore
+💪 Progress happens when you're challenged but never overwhelmed
+🎤 Playing real music you love is the fastest path to growth
+
+Before your first lesson, {{assignedTo}} may send you a short note asking about your goals, favorite artists, or musical experience. Take a moment to reply — it helps them prepare an amazing first session just for you.
+
+We're so glad you're here!
+
+{{assignedTo}} & the Lakehouse team`,
+      },
+    ],
+  },
+  {
+    id: "seq-3",
+    phase: "affirm",
+    name: "First Week — Getting Settled",
+    steps: [
+      {
+        day: 1,
+        subject: "Your first lesson preview — here's what to expect",
+        body: `Hi {{firstName}},
+
+Your first official Lakehouse lesson is almost here! We want to make sure you feel completely prepared and excited.
+
+📍 BEFORE YOU ARRIVE:
+- Plan to arrive 5 minutes early
+- Bring your instrument if you have one (we have loaners if not)
+- Pack a small notebook or use your phone for notes
+- Wear comfortable clothes — especially if you're playing drums!
+
+🎵 WHAT YOUR FIRST LESSON WILL COVER:
+Your instructor will start with a get-to-know-you conversation about your goals, musical tastes, and any prior experience. From there, you'll jump right into making music — no boring theory lectures on day one.
+
+📸 PHOTOS:
+We love capturing milestone moments with student permission. Let your instructor know if you're comfortable with a first-lesson photo!
+
+🏠 THE STUDIO:
+Free parking behind the building. Buzzer at the front door — we'll be expecting you.
+
+Any questions before you come in? Just hit reply!
+
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 3,
+        subject: "Getting to know Canvas — your student portal",
+        body: `Hi {{firstName}},
+
+We use Canvas as our student learning management system — think of it as your Lakehouse home base.
+
+Here's what you'll find in Canvas:
+📚 LESSON NOTES — Your instructor posts notes, tabs, and resources after every lesson
+🎥 PRACTICE VIDEOS — Short clips to help you practice correctly at home
+📅 SCHEDULE — Your upcoming lesson dates and any studio news
+💬 MESSAGES — Direct line to your instructor between lessons
+🏆 MILESTONES — Track your progress and celebrate achievements
+
+Your login credentials were emailed to you separately. If you haven't received them yet, check your spam folder or reply to this email and we'll resend.
+
+Pro tip: Download the Canvas Student app on your phone for quick access to lesson notes and practice materials on the go!
+
+Let us know if you need any help getting set up.
+
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 5,
+        subject: "Practice tips for {{instrument}}",
+        body: `Hi {{firstName}},
+
+Your instructor wanted to share some personalized practice guidance to help you get the most out of your time between lessons!
+
+🎵 TIPS FOR PRACTICING {{instrument}}:
+
+✅ Short and consistent beats long and infrequent — 15 minutes every day is better than 2 hours on Sunday
+✅ Always warm up before diving into new material
+✅ Practice slowly first — speed comes from accuracy, not the other way around
+✅ Record yourself once a week and listen back — you'll be amazed at your progress
+✅ End every session with something you can already play well — leave on a high note!
+
+📱 RECOMMENDED APPS:
+- GuitarTuna / PianoTuner — for tuning
+- Metronome Beats — for rhythm practice
+- YouTube — your instructor's favorite reference resource
+
+Remember: there's no such thing as a "bad" practice session. Even 10 minutes counts.
+
+See you at your next lesson!
+{{assignedTo}}`,
+      },
+    ],
+  },
+  {
+    id: "seq-4",
+    phase: "activate",
+    name: "First Lessons — Feedback & Check-In",
+    steps: [
+      {
+        day: 8,
+        subject: "How was your first lesson? We'd love to know!",
+        body: `Hi {{firstName}},
+
+You've officially completed your first Lakehouse lesson — congratulations!
+
+We care deeply about your experience and want to make sure everything is exactly right. Could you take 2 minutes to share your thoughts?
+
+A few questions:
+1. How did you feel about the pace and style of your lesson?
+2. Is there anything you'd like more or less of?
+3. Did anything surprise you (good or bad)?
+4. On a scale of 1-10, how excited are you for your next lesson?
+
+Your feedback helps us make every lesson better. There are no wrong answers — we want the honest truth!
+
+You can reply directly to this email or chat with {{assignedTo}} at your next session.
+
+Thank you for trusting us with your musical journey. We're rooting for you!
+
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 12,
+        subject: "Quick check-in — how's everything going?",
+        body: `Hi {{firstName}},
+
+Just a quick note from the Lakehouse team to see how things are going after your first few lessons!
+
+Parents and adult students alike tell us that weeks 2-4 are when the initial excitement either deepens into real commitment OR when doubt starts to creep in. Both are completely normal.
+
+If you're loving it — amazing! We'd love to hear what's clicking.
+
+If you're feeling frustrated — that's actually a great sign. It means you're being challenged. Stick with it! The breakthrough moments are just around the corner.
+
+And if anything isn't working — the schedule, the instructor fit, the lesson style — please tell us. We can adjust. Your success is our success.
+
+How are you doing? We're here for you.
+
+{{assignedTo}}
+Lakehouse Music Academy
+
+P.S. Don't forget — your instructor posts practice notes in Canvas after every lesson. Check in there between sessions!`,
+      },
+    ],
+  },
+  {
+    id: "seq-5",
+    phase: "acclimate",
+    name: "Onboarding — Semester Roadmap",
+    steps: [
+      {
+        day: 15,
+        subject: "Your semester roadmap at Lakehouse",
+        body: `Hi {{firstName}},
+
+You're two weeks in and things are really taking shape — this is such an exciting time in your musical development!
+
+Here's a look at what your Lakehouse semester has in store:
+
+📅 KEY DATES TO KNOW:
+- Monthly Jam Sessions — casual student get-togethers (ask your instructor for next date)
+- Mid-Semester Check-In — a quick 15-minute review with your instructor around week 8
+- The Big Gig — our flagship student showcase (details below!)
+- Re-enrollment opens 30 days before semester end
+
+🎪 THE BIG GIG:
+The Big Gig is Lakehouse's signature student performance event — a real concert experience at a real venue. It's optional but incredibly rewarding. Students who participate consistently say it's one of the highlights of their musical life.
+
+Your instructor will let you know when they think you're ready to participate. Start thinking about what song you'd love to perform!
+
+🎯 GOALS CHECK:
+What do you want to accomplish this semester? Reply and let us know — we'll share it with your instructor so they can build a roadmap just for you.
+
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 30,
+        subject: "One month in — you're doing amazing!",
+        body: `Hi {{firstName}},
+
+One full month at Lakehouse — let's celebrate that for a second!
+
+When you walked through our doors (or filled out that inquiry form), you took a step that most people only dream about. You actually did it. And you're still here, still showing up, still putting in the work.
+
+Your instructor has noticed your growth and wanted us to pass along some encouragement: the habits you're building now — the consistency, the patience, the willingness to be a beginner — will pay off in ways you can't yet imagine.
+
+A few things to celebrate this month:
+✅ You've established a practice routine
+✅ You're learning the language of music
+✅ You've already played things you couldn't a month ago
+
+Next step: let's make sure your second month is even better. Talk to your instructor at your next lesson about what you want to focus on for the rest of the semester.
+
+Keep going — we're so proud of you!
+
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+    ],
+  },
+  {
+    id: "seq-6",
+    phase: "accomplish",
+    name: "Milestone Celebration & Big Gig Prep",
+    steps: [
+      {
+        day: 0,
+        subject: "Congratulations on your first complete song! 🎉",
+        body: `Hi {{firstName}},
+
+We just heard the news from your instructor and we had to reach out immediately:
+
+YOU PLAYED YOUR FIRST COMPLETE SONG. 🎸🎹🥁
+
+This is a bigger deal than you might realize. Most people who pick up an instrument never reach this moment. You did.
+
+Your instructor reports that you've shown incredible dedication, a great ear, and the kind of persistence that separates students who truly grow from those who give up. You should be genuinely proud.
+
+This milestone unlocks something important: you now know that you CAN do this. Every song after this first one will come faster and feel better.
+
+We'd love to celebrate with you at the studio. If you haven't already, ask your instructor about:
+🎪 Performing at the next Big Gig
+🎵 Recording a short clip in our studio
+🏆 Your next milestone song goal
+
+What do you want to learn next? The sky's the limit!
+
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 14,
+        subject: "The Big Gig is coming — and you're ready!",
+        body: `Hi {{firstName}},
+
+The Big Gig is Lakehouse's most anticipated event of the year — and we think you're ready to be part of it!
+
+🎪 WHAT IS THE BIG GIG?
+It's a real concert at a real venue. Students perform for family, friends, and fellow Lakehouse musicians. It's not a recital — it's a show. There are lights, a stage, a sound system, and an audience that's there to cheer you on.
+
+🎸 WHY YOU SHOULD PERFORM:
+- It gives you a concrete goal to work toward
+- The feeling of playing in front of an audience is unforgettable
+- Every Lakehouse student who has performed says it changed their relationship with music
+- You've earned it — your instructor believes you're ready
+
+📋 LOGISTICS:
+- Date: TBD — watch your Canvas portal for details
+- Duration: Each student plays 1-3 songs (2-5 minutes on stage)
+- Rehearsal: One group sound check the week before
+- Guests: You can invite as many people as you want!
+
+Reply to confirm your interest and your instructor will start building your set list with you.
+
+The stage is yours.
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+    ],
+  },
+  {
+    id: "seq-7",
+    phase: "adopt",
+    name: "Loyalty — Re-Enrollment & Advanced Programs",
+    steps: [
+      {
+        day: 75,
+        subject: "Early bird re-enrollment — priority access for you",
+        body: `Hi {{firstName}},
+
+As one of our most dedicated Lakehouse students, you get first access to next semester's schedule before it opens to the public.
+
+Early bird re-enrollment is open NOW — and here's why it matters:
+
+⏰ WHY ENROLL EARLY:
+- Lock in your current instructor and time slot before the general opening
+- Popular evening and weekend slots fill within 48 hours once they go public
+- Early enrollees get priority placement in any new group programs or workshops
+
+💰 EARLY BIRD BONUS:
+Re-enroll by [early deadline] and receive:
+- Your current tuition rate locked in for the full semester
+- One complimentary make-up lesson credit
+- Access to new ensemble programs before general registration
+
+Your journey at Lakehouse has been incredible. We'd love nothing more than to keep growing with you.
+
+Reply to this email or log into Canvas to complete your re-enrollment. It only takes 2 minutes.
+
+See you next semester!
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 85,
+        subject: "Ready for the next level? Here's what's waiting for you",
+        body: `Hi {{firstName}},
+
+You've come an extraordinary distance since you first walked into Lakehouse. Your instructor has been talking about you — in the best possible way.
+
+We think you're ready for something more.
+
+🚀 ADVANCED OPPORTUNITIES FOR YOU:
+
+🎸 Advanced 1-on-1 Instruction — deeper dives into theory, technique, and artistry with specialist instructors
+
+🎤 Ensemble & Band Programs — play with other advanced students in a full band setting (electric, acoustic, or vocal-focused)
+
+🎼 Songwriting Workshop — learn to write original music and develop your unique voice
+
+🎪 Big Gig Leadership — be a featured performer or even a student mentor at our next showcase
+
+🏆 Performance Track — structured program for students interested in auditions, competitions, or music school applications
+
+These programs are invitation-only, and you've earned an invitation.
+
+Want to explore any of these? Reply and let's set up a 15-minute call with your instructor to map out your next chapter.
+
+The next level is waiting for you.
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+    ],
+  },
+  {
+    id: "seq-8",
+    phase: "advocate",
+    name: "Advocate — Referrals & Reviews",
+    steps: [
+      {
+        day: 0,
+        subject: "Share the Lakehouse experience — and we'll say thank you",
+        body: `Hi {{firstName}},
+
+The Big Gig is done, the applause has faded, and we're still buzzing from what an amazing night it was.
+
+You were a huge part of making it special — and we want to give back.
+
+🎁 THE LAKEHOUSE REFERRAL PROGRAM:
+
+For every friend or family member you refer who enrolls at Lakehouse, you receive:
+- $50 lesson credit applied to your next billing cycle
+- No limit — refer 5 students, get $250 in credits
+- Special recognition at our next Big Gig
+
+🎤 HOW TO REFER:
+Just send us a name and email, or have your friend mention your name when they inquire. We'll handle the rest.
+
+We grew this community through word of mouth — one student telling another student how much they love Lakehouse. That's the most powerful thing we have.
+
+If Lakehouse has meant something to you, sharing it with someone else is the greatest gift you can give them.
+
+And a huge, heartfelt thank you for being one of our favorite people.
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+      {
+        day: 30,
+        subject: "Would you leave us a quick review?",
+        body: `Hi {{firstName}},
+
+We have a small favor to ask — and we promise it'll only take 2 minutes.
+
+Would you be willing to leave us a review on Google or Yelp?
+
+Here's why it matters: when families are searching for music lessons for their kids (or themselves), honest reviews from real students are the #1 thing that helps them decide. Your words could be the reason someone discovers the thing they love.
+
+⭐ LEAVE A GOOGLE REVIEW:
+Search "Lakehouse Music Academy" on Google and click "Write a Review"
+
+⭐ LEAVE A YELP REVIEW:
+Search us on Yelp or ask us for a direct link
+
+Not sure what to say? Just write what's true for you — how you started, what changed, how you feel about it now. Authentic beats polished every time.
+
+If you'd rather share your story with us directly for our website or social media, we'd love that too. Just reply to this email.
+
+Thank you for being part of the Lakehouse community. You make this place what it is.
+
+With so much appreciation,
+{{assignedTo}}
+Lakehouse Music Academy`,
+      },
+    ],
+  },
+];
+
 // Sequences
 export async function getSequences(): Promise<Sequence[]> {
-  const data = await redis.get<Sequence[]>(KEYS.sequences);
-  return data ?? [];
+  return getOrSeed<Sequence>(KEYS.sequences, SEED_SEQUENCES);
+}
+
+export async function createSequence(data: Omit<Sequence, "id">): Promise<Sequence> {
+  const sequences = await getSequences();
+  const newSequence: Sequence = { ...data, id: `seq-${uuidv4()}` };
+  sequences.push(newSequence);
+  await setArray(KEYS.sequences, sequences);
+  return newSequence;
 }
 
 // Analytics
