@@ -7,6 +7,7 @@ import { isOverdue } from "./utils";
 const redis = new Redis({
   url: (process.env.UPSTASH_REDIS_REST_URL ?? "").trim(),
   token: (process.env.UPSTASH_REDIS_REST_TOKEN ?? "").trim(),
+  readYourWrites: true,
 });
 
 const KEYS = {
@@ -70,10 +71,12 @@ const SEED_ACTIVITIES: Activity[] = [
   { id: "act-030", leadId: "a1b2c3d4-0006-4000-8000-000000000006", type: "phase_change", content: "Trial was a success! Carmen signed up on the spot. Moving to Affirm.", createdAt: "2026-02-28T16:00:00Z", createdBy: "Sarah Johnson", metadata: { fromPhase: "admit", toPhase: "affirm" } },
 ];
 
-// Auto-seed helper: returns cached data or seeds Redis on first use
+// Auto-seed helper: returns existing data or seeds Redis on first run.
+// Checks for null (key not found) — NOT array length — so leads added
+// after seeding are never lost by an accidental re-seed.
 async function getOrSeed<T>(key: string, seedData: T[]): Promise<T[]> {
   const data = await redis.get<T[]>(key);
-  if (data !== null) return data;
+  if (data !== null) return data; // key exists; return as-is regardless of length
   await redis.set(key, seedData);
   return seedData;
 }
