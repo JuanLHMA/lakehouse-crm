@@ -6,16 +6,16 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 
 export function getPhaseColor(phase: Phase): string {
   const colors: Record<Phase, string> = {
-    assess: "bg-slate-100 text-slate-700 border-slate-300",
-    admit: "bg-blue-100 text-blue-700 border-blue-300",
-    affirm: "bg-violet-100 text-violet-700 border-violet-300",
-    activate: "bg-amber-100 text-amber-700 border-amber-300",
-    acclimate: "bg-orange-100 text-orange-700 border-orange-300",
-    accomplish: "bg-emerald-100 text-emerald-700 border-emerald-300",
-    adopt: "bg-teal-100 text-teal-700 border-teal-300",
-    advocate: "bg-rose-100 text-rose-700 border-rose-300",
+    assess: "bg-slate-800/60 text-slate-300 border-slate-600",
+    admit: "bg-blue-900/40 text-blue-300 border-blue-700",
+    affirm: "bg-violet-900/40 text-violet-300 border-violet-700",
+    activate: "bg-amber-900/40 text-amber-300 border-amber-700",
+    acclimate: "bg-orange-900/40 text-orange-300 border-orange-700",
+    accomplish: "bg-emerald-900/40 text-emerald-300 border-emerald-700",
+    adopt: "bg-teal-900/40 text-teal-300 border-teal-700",
+    advocate: "bg-rose-900/40 text-rose-300 border-rose-700",
   };
-  return colors[phase] ?? "bg-gray-100 text-gray-700 border-gray-300";
+  return colors[phase] ?? "bg-white/10 text-gray-300 border-white/20";
 }
 
 export function getPhaseBorderColor(phase: Phase): string {

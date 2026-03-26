@@ -9,7 +9,6 @@ import {
   Users,
   Mail,
   BarChart3,
-  Music2,
   LogOut,
   Menu,
   X,
@@ -38,14 +37,22 @@ export default function Sidebar() {
     <>
       {/* Logo */}
       <div className="px-6 py-5 border-b border-white/10">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
-            <Music2 className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <p className="text-white font-bold text-sm leading-tight">Lakehouse</p>
-            <p className="text-white/60 text-xs">Music Academy</p>
-          </div>
+        <div>
+          <p
+            className="text-white text-xl tracking-widest uppercase leading-none"
+            style={{ fontFamily: "var(--font-anton), Impact, sans-serif" }}
+          >
+            LAKE
+          </p>
+          <p
+            className="text-white text-xl tracking-widest uppercase leading-none"
+            style={{ fontFamily: "var(--font-anton), Impact, sans-serif" }}
+          >
+            HOUSE
+          </p>
+          <p className="text-[#DC143C] text-xs tracking-widest uppercase mt-1 font-bold">
+            CRM
+          </p>
         </div>
       </div>
 
@@ -64,8 +71,8 @@ export default function Sidebar() {
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
                 isActive
-                  ? "bg-white/15 text-white"
-                  : "text-white/70 hover:bg-white/10 hover:text-white"
+                  ? "bg-white text-black"
+                  : "text-gray-400 hover:bg-white/10 hover:text-white"
               )}
             >
               <Icon className="w-4 h-4 flex-shrink-0" />
@@ -79,7 +86,7 @@ export default function Sidebar() {
       <div className="px-3 py-4 border-t border-white/10">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/70 hover:bg-white/10 hover:text-white transition-all w-full"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:bg-white/10 hover:text-white transition-all w-full"
         >
           <LogOut className="w-4 h-4" />
           Sign Out
@@ -91,16 +98,18 @@ export default function Sidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex flex-col w-56 bg-[#DC143C] min-h-screen fixed left-0 top-0 z-30">
+      <aside className="hidden lg:flex flex-col w-56 bg-black border-r border-white/10 min-h-screen fixed left-0 top-0 z-30">
         <NavContent />
       </aside>
 
       {/* Mobile header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-[#DC143C] px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Music2 className="w-5 h-5 text-white" />
-          <span className="text-white font-bold text-sm">Lakehouse CRM</span>
-        </div>
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-black border-b border-white/10 px-4 py-3 flex items-center justify-between">
+        <span
+          className="text-white font-bold text-lg tracking-widest uppercase"
+          style={{ fontFamily: "var(--font-anton), Impact, sans-serif" }}
+        >
+          LAKEHOUSE CRM
+        </span>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="text-white hover:bg-white/10 p-1.5 rounded-lg transition-colors"
@@ -113,10 +122,10 @@ export default function Sidebar() {
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50">
           <div
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-black/70"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="absolute left-0 top-0 bottom-0 w-56 bg-[#DC143C] flex flex-col">
+          <aside className="absolute left-0 top-0 bottom-0 w-56 bg-black border-r border-white/10 flex flex-col">
             <NavContent />
           </aside>
         </div>

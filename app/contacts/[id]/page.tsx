@@ -214,7 +214,7 @@ export default function ContactDetailPage() {
       <div className="flex items-center justify-between mb-5">
         <Link
           href="/contacts"
-          className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
+          className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Contacts
@@ -222,14 +222,14 @@ export default function ContactDetailPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowEditForm(true)}
-            className="flex items-center gap-1.5 border border-gray-200 bg-white text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-1.5 border border-white/15 bg-transparent text-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors"
           >
             <Edit className="w-3.5 h-3.5" />
             Edit
           </button>
           <button
             onClick={handleDelete}
-            className="flex items-center gap-1.5 border border-red-200 bg-white text-red-600 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
+            className="flex items-center gap-1.5 border border-[#DC143C]/30 bg-transparent text-[#DC143C] px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-[#DC143C]/10 transition-colors"
           >
             <Trash2 className="w-3.5 h-3.5" />
             Delete
@@ -241,19 +241,19 @@ export default function ContactDetailPage() {
         {/* Left column: Contact info */}
         <div className="lg:col-span-1 space-y-4">
           {/* Profile Card */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-5">
             <div className="flex items-start gap-4 mb-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#DC143C]/10 flex items-center justify-center flex-shrink-0">
+              <div className="w-14 h-14 rounded-2xl bg-[#DC143C]/10 border border-[#DC143C]/20 flex items-center justify-center flex-shrink-0">
                 <span className="text-2xl font-bold text-[#DC143C]">
                   {lead.name.charAt(0)}
                 </span>
               </div>
               <div className="flex-1">
-                <h1 className="text-lg font-bold text-gray-900">{lead.name}</h1>
+                <h1 className="text-lg font-bold text-white">{lead.name}</h1>
                 <div className="flex items-center gap-2 mt-1">
                   <PhaseTag phase={lead.phase} />
                   {overdue && (
-                    <span className="flex items-center gap-1 text-xs text-red-600 font-medium">
+                    <span className="flex items-center gap-1 text-xs text-[#DC143C] font-medium">
                       <AlertCircle className="w-3 h-3" />
                       Overdue
                     </span>
@@ -267,10 +267,10 @@ export default function ContactDetailPage() {
               <span
                 className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
                   lead.status === "active"
-                    ? "bg-emerald-100 text-emerald-700"
+                    ? "bg-emerald-500/10 text-emerald-400"
                     : lead.status === "converted"
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-gray-100 text-gray-600"
+                    ? "bg-blue-500/10 text-blue-400"
+                    : "bg-white/5 text-gray-500"
                 }`}
               >
                 <span
@@ -279,7 +279,7 @@ export default function ContactDetailPage() {
                       ? "bg-emerald-500"
                       : lead.status === "converted"
                       ? "bg-blue-500"
-                      : "bg-gray-400"
+                      : "bg-gray-600"
                   }`}
                 />
                 {lead.status.charAt(0).toUpperCase() + lead.status.slice(1)}
@@ -289,49 +289,49 @@ export default function ContactDetailPage() {
             {/* Details */}
             <div className="space-y-3">
               <div className="flex items-center gap-2.5 text-sm">
-                <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                <a href={`mailto:${lead.email}`} className="text-gray-700 hover:text-[#DC143C] transition-colors truncate">
+                <Mail className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                <a href={`mailto:${lead.email}`} className="text-gray-400 hover:text-white transition-colors truncate">
                   {lead.email}
                 </a>
               </div>
               {lead.phone && (
                 <div className="flex items-center gap-2.5 text-sm">
-                  <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                  <a href={`tel:${lead.phone}`} className="text-gray-700 hover:text-[#DC143C] transition-colors">
+                  <Phone className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                  <a href={`tel:${lead.phone}`} className="text-gray-400 hover:text-white transition-colors">
                     {lead.phone}
                   </a>
                 </div>
               )}
               <div className="flex items-center gap-2.5 text-sm">
-                <Music className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                <span className="text-gray-700">{formatInstrument(lead.instrument)}</span>
+                <Music className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                <span className="text-gray-400">{formatInstrument(lead.instrument)}</span>
               </div>
               <div className="flex items-center gap-2.5 text-sm">
-                <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                <span className="text-gray-700">Age {lead.age}</span>
+                <User className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                <span className="text-gray-400">Age {lead.age}</span>
               </div>
               <div className="flex items-center gap-2.5 text-sm">
-                <CheckCircle className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                <span className="text-gray-700">Source: {formatSource(lead.source)}</span>
+                <CheckCircle className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                <span className="text-gray-400">Source: {formatSource(lead.source)}</span>
               </div>
               <div className="flex items-center gap-2.5 text-sm">
-                <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                <span className="text-gray-700">Assigned: {lead.assignedTo}</span>
+                <User className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                <span className="text-gray-400">Assigned: {lead.assignedTo}</span>
               </div>
             </div>
 
             {/* Tags */}
             {lead.tags.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-gray-100">
+              <div className="mt-4 pt-4 border-t border-white/10">
                 <div className="flex items-center gap-1.5 mb-2">
-                  <Tag className="w-3.5 h-3.5 text-gray-400" />
-                  <span className="text-xs font-semibold text-gray-500">Tags</span>
+                  <Tag className="w-3.5 h-3.5 text-gray-600" />
+                  <span className="text-xs font-semibold text-gray-600">Tags</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {lead.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
+                      className="text-xs bg-white/10 text-gray-400 px-2 py-1 rounded-full"
                     >
                       {tag}
                     </span>
@@ -341,27 +341,27 @@ export default function ContactDetailPage() {
             )}
 
             {/* Dates */}
-            <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
+            <div className="mt-4 pt-4 border-t border-white/10 space-y-2">
               <div className="flex justify-between text-xs">
-                <span className="text-gray-400">Last contact</span>
-                <span className="text-gray-600 font-medium">{formatDate(lead.lastContactDate)}</span>
+                <span className="text-gray-600">Last contact</span>
+                <span className="text-gray-400 font-medium">{formatDate(lead.lastContactDate)}</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-gray-400">Next action</span>
-                <span className={`font-medium ${overdue ? "text-red-600" : "text-gray-600"}`}>
+                <span className="text-gray-600">Next action</span>
+                <span className={`font-medium ${overdue ? "text-[#DC143C]" : "text-gray-400"}`}>
                   {overdue ? "⚠️ " : ""}{formatDate(lead.nextActionDate)}
                 </span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-gray-400">Created</span>
-                <span className="text-gray-600 font-medium">{formatDate(lead.createdAt)}</span>
+                <span className="text-gray-600">Created</span>
+                <span className="text-gray-400 font-medium">{formatDate(lead.createdAt)}</span>
               </div>
             </div>
           </div>
 
           {/* Phase Change */}
-          <div className="bg-white rounded-xl border border-gray-200 p-4">
-            <h3 className="text-sm font-bold text-gray-900 mb-3">Change Phase</h3>
+          <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-4">
+            <h3 className="text-sm font-bold text-white mb-3">Change Phase</h3>
             <div className="grid grid-cols-2 gap-1.5">
               {PHASES.map((phase) => (
                 <button
@@ -371,7 +371,7 @@ export default function ContactDetailPage() {
                   className={`text-xs px-2 py-1.5 rounded-lg font-medium transition-colors ${
                     lead.phase === phase
                       ? "bg-[#DC143C] text-white cursor-default"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      : "bg-white/10 text-gray-400 hover:bg-white/20 hover:text-white"
                   }`}
                 >
                   {formatPhase(phase)}
@@ -382,9 +382,9 @@ export default function ContactDetailPage() {
 
           {/* Notes */}
           {lead.notes && (
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
-              <h3 className="text-sm font-bold text-gray-900 mb-2">Notes</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">{lead.notes}</p>
+            <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-4">
+              <h3 className="text-sm font-bold text-white mb-2">Notes</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">{lead.notes}</p>
             </div>
           )}
         </div>
@@ -392,9 +392,9 @@ export default function ContactDetailPage() {
         {/* Right column: Activity Timeline */}
         <div className="lg:col-span-2 space-y-4">
           {/* Action bar */}
-          <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-4">
             <div className="flex items-center gap-2 mb-3">
-              <h3 className="text-sm font-bold text-gray-900">Log Activity</h3>
+              <h3 className="text-sm font-bold text-white">Log Activity</h3>
             </div>
             <div className="flex flex-wrap gap-2 mb-3">
               {(["call", "email", "note"] as const).map((type) => (
@@ -408,7 +408,7 @@ export default function ContactDetailPage() {
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     showAddNote && logType === type
                       ? "bg-[#DC143C] text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      : "bg-white/10 text-gray-400 hover:bg-white/20 hover:text-white"
                   }`}
                 >
                   <span>
@@ -425,7 +425,7 @@ export default function ContactDetailPage() {
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                   showSendEmail
                     ? "bg-[#DC143C] text-white"
-                    : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                    : "bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
                 }`}
               >
                 <span>📧</span>
@@ -446,14 +446,14 @@ export default function ContactDetailPage() {
                       : "Notes about this student..."
                   }
                   rows={3}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                  className="w-full bg-black border border-white/15 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-[#DC143C]/40 focus:border-[#DC143C]"
                   autoFocus
                 />
                 <div className="flex gap-2">
                   <button
                     onClick={handleLogActivity}
                     disabled={!noteText.trim()}
-                    className="px-4 py-2 bg-[#DC143C] text-white rounded-lg text-xs font-semibold hover:bg-[#B01030] transition-colors disabled:opacity-50"
+                    className="px-4 py-2 bg-white text-black rounded-lg text-xs font-bold hover:bg-gray-200 transition-colors disabled:opacity-50 uppercase tracking-wide"
                   >
                     Save
                   </button>
@@ -462,7 +462,7 @@ export default function ContactDetailPage() {
                       setShowAddNote(false);
                       setNoteText("");
                     }}
-                    className="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors"
+                    className="px-4 py-2 border border-white/15 text-gray-400 rounded-lg text-xs font-medium hover:bg-white/5 transition-colors"
                   >
                     Cancel
                   </button>
@@ -472,15 +472,15 @@ export default function ContactDetailPage() {
 
             {showSendEmail && (
               <div className="space-y-2">
-                <div className="text-xs text-gray-500 mb-1">
-                  To: <span className="font-medium text-gray-700">{lead.email}</span>
+                <div className="text-xs text-gray-600 mb-1">
+                  To: <span className="font-medium text-gray-400">{lead.email}</span>
                 </div>
                 <input
                   type="text"
                   value={emailSubject}
                   onChange={(e) => setEmailSubject(e.target.value)}
                   placeholder="Subject"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                  className="w-full bg-black border border-white/15 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#DC143C]/40 focus:border-[#DC143C]"
                   autoFocus
                 />
                 <textarea
@@ -488,13 +488,13 @@ export default function ContactDetailPage() {
                   onChange={(e) => setEmailBody(e.target.value)}
                   placeholder="Email body..."
                   rows={5}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                  className="w-full bg-black border border-white/15 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-[#DC143C]/40 focus:border-[#DC143C]"
                 />
                 <div className="flex gap-2">
                   <button
                     onClick={handleSendEmail}
                     disabled={!emailSubject.trim() || !emailBody.trim() || sendingEmail}
-                    className="px-4 py-2 bg-[#DC143C] text-white rounded-lg text-xs font-semibold hover:bg-[#B01030] transition-colors disabled:opacity-50"
+                    className="px-4 py-2 bg-white text-black rounded-lg text-xs font-bold hover:bg-gray-200 transition-colors disabled:opacity-50 uppercase tracking-wide"
                   >
                     {sendingEmail ? "Sending..." : "Send"}
                   </button>
@@ -504,7 +504,7 @@ export default function ContactDetailPage() {
                       setEmailSubject("");
                       setEmailBody("");
                     }}
-                    className="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors"
+                    className="px-4 py-2 border border-white/15 text-gray-400 rounded-lg text-xs font-medium hover:bg-white/5 transition-colors"
                   >
                     Cancel
                   </button>
@@ -514,14 +514,14 @@ export default function ContactDetailPage() {
           </div>
 
           {/* Timeline */}
-          <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-4">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-gray-900">Activity Timeline</h3>
-              <span className="text-xs text-gray-400">{activities.length} events</span>
+              <h3 className="text-sm font-bold text-white">Activity Timeline</h3>
+              <span className="text-xs text-gray-600">{activities.length} events</span>
             </div>
 
             {activities.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-10 text-gray-400">
+              <div className="flex flex-col items-center justify-center py-10 text-gray-600">
                 <Calendar className="w-8 h-8 mb-2" />
                 <p className="text-sm">No activity yet</p>
               </div>
@@ -531,43 +531,43 @@ export default function ContactDetailPage() {
                   <div key={activity.id} className="flex gap-3 group">
                     {/* Timeline line */}
                     <div className="flex flex-col items-center flex-shrink-0">
-                      <div className="w-8 h-8 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-base mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-black border border-white/15 flex items-center justify-center text-base mt-0.5">
                         {getActivityIcon(activity.type)}
                       </div>
                       {index < activities.length - 1 && (
-                        <div className="w-px h-full min-h-[20px] bg-gray-100 my-1" />
+                        <div className="w-px h-full min-h-[20px] bg-white/10 my-1" />
                       )}
                     </div>
 
                     {/* Content */}
                     <div className="flex-1 pb-4">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs font-semibold text-gray-700">
+                        <span className="text-xs font-semibold text-gray-300">
                           {getActivityLabel(activity.type)}
                         </span>
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs text-gray-600">
                           by {activity.createdBy}
                         </span>
-                        <span className="text-xs text-gray-400">·</span>
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs text-gray-700">·</span>
+                        <span className="text-xs text-gray-600">
                           {formatRelativeDate(activity.createdAt)}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+                      <p className="text-sm text-gray-500 mt-1 leading-relaxed">
                         {activity.content}
                       </p>
                       {activity.type === "phase_change" && activity.metadata && (
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-gray-600">
                             {String(activity.metadata.fromPhase ?? "")}
                           </span>
-                          <span className="text-xs text-gray-400">→</span>
+                          <span className="text-xs text-gray-600">→</span>
                           <span className="text-xs font-medium text-[#DC143C]">
                             {String(activity.metadata.toPhase ?? "")}
                           </span>
                         </div>
                       )}
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-gray-700 mt-1">
                         {formatDate(activity.createdAt)}
                       </p>
                     </div>

@@ -4,7 +4,7 @@ import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { cn, formatPhase, getPhaseHeaderColor } from "@/lib/utils";
+import { cn, formatPhase } from "@/lib/utils";
 import LeadCard from "./LeadCard";
 import type { Lead, Phase } from "@/lib/types";
 
@@ -41,14 +41,9 @@ export default function KanbanColumn({ phase, leads }: KanbanColumnProps) {
   return (
     <div className="flex flex-col min-w-[220px] w-[220px] flex-shrink-0">
       {/* Column Header */}
-      <div
-        className={cn(
-          "px-3 py-2.5 rounded-t-xl border border-b-0 flex items-center justify-between",
-          getPhaseHeaderColor(phase)
-        )}
-      >
-        <h2 className="font-semibold text-sm text-gray-700">{formatPhase(phase)}</h2>
-        <span className="text-xs font-bold bg-white/80 text-gray-600 px-2 py-0.5 rounded-full border border-gray-200">
+      <div className="px-3 py-2.5 rounded-t-xl border border-b-0 border-white/10 bg-[#111] flex items-center justify-between">
+        <h2 className="font-semibold text-sm text-white">{formatPhase(phase)}</h2>
+        <span className="text-xs font-bold bg-white/10 text-gray-300 px-2 py-0.5 rounded-full border border-white/10">
           {leads.length}
         </span>
       </div>
@@ -58,7 +53,7 @@ export default function KanbanColumn({ phase, leads }: KanbanColumnProps) {
         ref={setNodeRef}
         className={cn(
           "flex-1 min-h-[400px] rounded-b-xl border border-t-0 p-2 flex flex-col gap-2 transition-colors",
-          isOver ? "bg-blue-50 border-blue-200" : "bg-gray-50 border-gray-200"
+          isOver ? "bg-[#DC143C]/10 border-[#DC143C]/30" : "bg-[#0A0A0A] border-white/10"
         )}
       >
         <SortableContext
@@ -72,7 +67,7 @@ export default function KanbanColumn({ phase, leads }: KanbanColumnProps) {
 
         {leads.length === 0 && (
           <div className="flex-1 flex items-center justify-center">
-            <p className="text-xs text-gray-400 text-center py-4">
+            <p className="text-xs text-gray-600 text-center py-4">
               No leads in {formatPhase(phase)}
             </p>
           </div>

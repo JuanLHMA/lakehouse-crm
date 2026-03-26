@@ -62,14 +62,14 @@ export default function SequencesPage() {
     <ProtectedLayout>
       {/* Send to Lead Modal */}
       {sendModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl border border-gray-200 shadow-xl p-6 w-full max-w-sm mx-4">
-            <h2 className="text-base font-bold text-gray-900 mb-1">Send Sequence to Lead</h2>
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-[#111] rounded-xl border border-white/15 shadow-2xl p-6 w-full max-w-sm mx-4">
+            <h2 className="text-base font-bold text-white mb-1">Send Sequence to Lead</h2>
             <p className="text-sm text-gray-500 mb-4">{sendModal.sequenceName}</p>
             <select
               value={selectedLeadId}
               onChange={(e) => setSelectedLeadId(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+              className="w-full bg-black border border-white/15 rounded-lg px-3 py-2 text-sm text-white mb-4 focus:outline-none focus:ring-2 focus:ring-[#DC143C]/40 focus:border-[#DC143C]"
             >
               <option value="">Select a lead…</option>
               {leads.map((l) => (
@@ -82,13 +82,13 @@ export default function SequencesPage() {
               <button
                 onClick={handleSendToLead}
                 disabled={!selectedLeadId || sending}
-                className="flex-1 px-4 py-2 bg-[#DC143C] text-white rounded-lg text-sm font-semibold hover:bg-[#B01030] transition-colors disabled:opacity-50"
+                className="flex-1 px-4 py-2 bg-white text-black rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors disabled:opacity-50 uppercase tracking-wide"
               >
                 {sending ? "Sending..." : "Send"}
               </button>
               <button
                 onClick={() => { setSendModal(null); setSelectedLeadId(""); }}
-                className="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 border border-white/15 text-gray-400 rounded-lg text-sm font-medium hover:bg-white/5 transition-colors"
               >
                 Cancel
               </button>
@@ -99,7 +99,7 @@ export default function SequencesPage() {
 
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Email Sequences</h1>
+        <h1 className="text-2xl font-bold text-white">Email Sequences</h1>
         <p className="text-sm text-gray-500 mt-0.5">
           Automated email nurture sequences for each phase of the student journey
         </p>
@@ -116,19 +116,19 @@ export default function SequencesPage() {
             return (
               <div
                 key={seq.id}
-                className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-sm transition-shadow"
+                className="bg-[#1A1A1A] rounded-xl border border-white/10 overflow-hidden hover:border-white/20 transition-all"
               >
                 {/* Header */}
                 <button
                   onClick={() => toggle(seq.id)}
-                  className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-gray-50 transition-colors"
+                  className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-white/5 transition-colors"
                 >
                   <div className="w-10 h-10 rounded-xl bg-[#DC143C]/10 flex items-center justify-center flex-shrink-0">
                     <Mail className="w-5 h-5 text-[#DC143C]" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 flex-wrap">
-                      <h2 className="font-bold text-gray-900">{seq.name}</h2>
+                      <h2 className="font-bold text-white">{seq.name}</h2>
                       <PhaseTag phase={seq.phase} size="sm" />
                     </div>
                     <p className="text-sm text-gray-500 mt-0.5">
@@ -149,16 +149,16 @@ export default function SequencesPage() {
                       Send to Lead
                     </button>
                     {isOpen ? (
-                      <ChevronDown className="w-5 h-5 text-gray-400" />
+                      <ChevronDown className="w-5 h-5 text-gray-600" />
                     ) : (
-                      <ChevronRight className="w-5 h-5 text-gray-400" />
+                      <ChevronRight className="w-5 h-5 text-gray-600" />
                     )}
                   </div>
                 </button>
 
                 {/* Steps */}
                 {isOpen && (
-                  <div className="border-t border-gray-100 px-5 py-4 space-y-4">
+                  <div className="border-t border-white/10 px-5 py-4 space-y-4">
                     {seq.steps.map((step, index) => (
                       <div key={index} className="flex gap-4">
                         {/* Day badge + line */}
@@ -169,26 +169,26 @@ export default function SequencesPage() {
                             </span>
                           </div>
                           {index < seq.steps.length - 1 && (
-                            <div className="w-px flex-1 min-h-[32px] bg-gray-200 mt-1" />
+                            <div className="w-px flex-1 min-h-[32px] bg-white/10 mt-1" />
                           )}
                         </div>
 
                         {/* Email content */}
                         <div className="flex-1 pb-4">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
                               Subject
                             </span>
                           </div>
-                          <p className="font-semibold text-gray-900 text-sm mb-2">
+                          <p className="font-semibold text-white text-sm mb-2">
                             {step.subject}
                           </p>
-                          <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
-                            <p className="text-sm text-gray-600 whitespace-pre-line leading-relaxed">
+                          <div className="bg-black rounded-lg p-3 border border-white/10">
+                            <p className="text-sm text-gray-400 whitespace-pre-line leading-relaxed">
                               {step.body}
                             </p>
                           </div>
-                          <div className="flex items-center gap-1 mt-2 text-xs text-gray-400">
+                          <div className="flex items-center gap-1 mt-2 text-xs text-gray-600">
                             <Clock className="w-3 h-3" />
                             <span>Sends on day {step.day} of sequence</span>
                           </div>
@@ -204,12 +204,12 @@ export default function SequencesPage() {
       )}
 
       {/* Info card */}
-      <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
+      <div className="mt-6 bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
         <div className="flex items-start gap-3">
-          <Mail className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+          <Mail className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
           <div>
-            <h3 className="font-semibold text-blue-900 text-sm">About Email Sequences</h3>
-            <p className="text-blue-700 text-sm mt-1">
+            <h3 className="font-semibold text-blue-300 text-sm">About Email Sequences</h3>
+            <p className="text-blue-400/70 text-sm mt-1">
               Each sequence is triggered when a lead enters a new phase. Emails are automatically
               personalized with the lead&apos;s name and assigned staff member. Sequences can be
               paused or customized per lead from the contact detail view.

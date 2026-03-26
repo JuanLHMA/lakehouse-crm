@@ -27,10 +27,19 @@ const PHASE_COLORS: Record<Phase, string> = {
   acclimate: "#f97316",
   accomplish: "#10b981",
   adopt: "#14b8a6",
-  advocate: "#f43f5e",
+  advocate: "#DC143C",
 };
 
 const SOURCE_COLORS = ["#DC143C", "#3b82f6", "#10b981", "#f59e0b", "#8b5cf6"];
+
+const darkTooltipStyle = {
+  border: "1px solid #333",
+  borderRadius: "8px",
+  fontSize: "12px",
+  backgroundColor: "#1A1A1A",
+  color: "#fff",
+  boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.5)",
+};
 
 export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
@@ -86,7 +95,7 @@ export default function AnalyticsPage() {
     <ProtectedLayout>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Analytics</h1>
+        <h1 className="text-2xl font-bold text-white">Analytics</h1>
         <p className="text-sm text-gray-500 mt-0.5">
           Key metrics for the Lakehouse student journey
         </p>
@@ -94,63 +103,63 @@ export default function AnalyticsPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-xl border border-gray-200 p-4">
+        <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-4">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-              <Users className="w-4 h-4 text-blue-600" />
+            <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
+              <Users className="w-4 h-4 text-blue-400" />
             </div>
             <span className="text-xs font-medium text-gray-500">Total Leads</span>
           </div>
-          <p className="text-2xl font-bold text-gray-900">{analytics.totalLeads}</p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-2xl font-bold text-white">{analytics.totalLeads}</p>
+          <p className="text-xs text-gray-600 mt-1">
             {analytics.activeLeads} active
           </p>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-4">
+        <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-4">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 text-emerald-600" />
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4 text-emerald-400" />
             </div>
             <span className="text-xs font-medium text-gray-500">Conversion Rate</span>
           </div>
-          <p className="text-2xl font-bold text-gray-900">{analytics.conversionRate}%</p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-2xl font-bold text-white">{analytics.conversionRate}%</p>
+          <p className="text-xs text-gray-600 mt-1">
             {analytics.convertedLeads} converted
           </p>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-4">
+        <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-4">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center">
-              <Star className="w-4 h-4 text-rose-600" />
+            <div className="w-8 h-8 rounded-lg bg-[#DC143C]/10 flex items-center justify-center">
+              <Star className="w-4 h-4 text-[#DC143C]" />
             </div>
             <span className="text-xs font-medium text-gray-500">Overdue</span>
           </div>
-          <p className={`text-2xl font-bold ${analytics.overdueLeads > 0 ? "text-red-600" : "text-gray-900"}`}>
+          <p className={`text-2xl font-bold ${analytics.overdueLeads > 0 ? "text-[#DC143C]" : "text-white"}`}>
             {analytics.overdueLeads}
           </p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-gray-600 mt-1">
             Follow-ups overdue
           </p>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-4">
+        <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-4">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
-              <Clock className="w-4 h-4 text-violet-600" />
+            <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
+              <Clock className="w-4 h-4 text-violet-400" />
             </div>
             <span className="text-xs font-medium text-gray-500">This Week</span>
           </div>
-          <p className="text-2xl font-bold text-gray-900">{analytics.newLeadsThisWeek}</p>
-          <p className="text-xs text-gray-400 mt-1">New leads</p>
+          <p className="text-2xl font-bold text-white">{analytics.newLeadsThisWeek}</p>
+          <p className="text-xs text-gray-600 mt-1">New leads</p>
         </div>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-4 mb-4">
         {/* Leads by Phase */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-bold text-gray-900 mb-4">Leads by Phase</h2>
+        <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-5">
+          <h2 className="font-bold text-white mb-4">Leads by Phase</h2>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={phaseBarData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
               <XAxis
@@ -165,14 +174,7 @@ export default function AnalyticsPage() {
                 tickLine={false}
                 allowDecimals={false}
               />
-              <Tooltip
-                contentStyle={{
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "8px",
-                  fontSize: "12px",
-                  boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                }}
-              />
+              <Tooltip contentStyle={darkTooltipStyle} />
               <Bar dataKey="count" radius={[4, 4, 0, 0]}>
                 {phaseBarData.map((entry) => (
                   <Cell
@@ -186,8 +188,8 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Avg Days in Phase */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-bold text-gray-900 mb-4">Avg Days in Phase</h2>
+        <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-5">
+          <h2 className="font-bold text-white mb-4">Avg Days in Phase</h2>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart
               data={avgDaysData}
@@ -209,12 +211,7 @@ export default function AnalyticsPage() {
                 width={60}
               />
               <Tooltip
-                contentStyle={{
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "8px",
-                  fontSize: "12px",
-                  boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                }}
+                contentStyle={darkTooltipStyle}
                 formatter={(value) => [`${value ?? 0} days`, "Avg time"]}
               />
               <Bar dataKey="days" radius={[0, 4, 4, 0]}>
@@ -232,8 +229,8 @@ export default function AnalyticsPage() {
 
       <div className="grid lg:grid-cols-2 gap-4">
         {/* Leads by Source */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-bold text-gray-900 mb-4">Leads by Source</h2>
+        <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-5">
+          <h2 className="font-bold text-white mb-4">Leads by Source</h2>
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
               <Pie
@@ -254,13 +251,7 @@ export default function AnalyticsPage() {
                   />
                 ))}
               </Pie>
-              <Tooltip
-                contentStyle={{
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "8px",
-                  fontSize: "12px",
-                }}
-              />
+              <Tooltip contentStyle={darkTooltipStyle} />
               <Legend
                 iconType="circle"
                 iconSize={8}
@@ -273,8 +264,8 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Top Assignees */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-bold text-gray-900 mb-4">Leads by Assignee</h2>
+        <div className="bg-[#1A1A1A] rounded-xl border border-white/10 p-5">
+          <h2 className="font-bold text-white mb-4">Leads by Assignee</h2>
           <div className="space-y-3">
             {assigneeData.map(({ name, count }, index) => {
               const max = Math.max(...assigneeData.map((a) => a.count), 1);
@@ -291,10 +282,10 @@ export default function AnalyticsPage() {
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-gray-700">{fullName}</span>
-                      <span className="text-sm font-bold text-gray-900">{count}</span>
+                      <span className="text-sm font-medium text-gray-300">{fullName}</span>
+                      <span className="text-sm font-bold text-white">{count}</span>
                     </div>
-                    <div className="w-full bg-gray-100 rounded-full h-1.5">
+                    <div className="w-full bg-white/10 rounded-full h-1.5">
                       <div
                         className="h-1.5 rounded-full transition-all"
                         style={{

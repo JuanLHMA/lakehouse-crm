@@ -28,6 +28,10 @@ const defaultForm = {
   nextActionDate: "",
 };
 
+const inputClass = "w-full bg-black border border-white/15 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#DC143C]/40 focus:border-[#DC143C]";
+const selectClass = "w-full bg-black border border-white/15 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC143C]/40 focus:border-[#DC143C]";
+const labelClass = "block text-xs font-semibold text-gray-500 mb-1";
+
 export default function ContactForm({ lead, onClose, onSave }: ContactFormProps) {
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -88,16 +92,16 @@ export default function ContactForm({ lead, onClose, onSave }: ContactFormProps)
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
+      <div className="bg-[#111] rounded-2xl border border-white/15 shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <h2 className="text-lg font-bold text-gray-900">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+          <h2 className="text-lg font-bold text-white">
             {lead ? "Edit Contact" : "New Contact"}
           </h2>
           <button
             onClick={onClose}
-            className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
           >
             <X className="w-5 h-5 text-gray-500" />
           </button>
@@ -107,26 +111,22 @@ export default function ContactForm({ lead, onClose, onSave }: ContactFormProps)
           {/* Name + Email */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">
-                Full Name *
-              </label>
+              <label className={labelClass}>Full Name *</label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                className={inputClass}
                 placeholder="Marcus Rivera"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">
-                Email *
-              </label>
+              <label className={labelClass}>Email *</label>
               <input
                 type="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                className={inputClass}
                 placeholder="name@email.com"
               />
             </div>
@@ -135,22 +135,22 @@ export default function ContactForm({ lead, onClose, onSave }: ContactFormProps)
           {/* Phone + Age */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">Phone</label>
+              <label className={labelClass}>Phone</label>
               <input
                 type="tel"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                className={inputClass}
                 placeholder="732-555-0100"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">Age</label>
+              <label className={labelClass}>Age</label>
               <input
                 type="number"
                 value={form.age}
                 onChange={(e) => setForm({ ...form, age: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                className={inputClass}
                 placeholder="14"
                 min="1"
                 max="100"
@@ -161,11 +161,11 @@ export default function ContactForm({ lead, onClose, onSave }: ContactFormProps)
           {/* Instrument + Source */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">Instrument</label>
+              <label className={labelClass}>Instrument</label>
               <select
                 value={form.instrument}
                 onChange={(e) => setForm({ ...form, instrument: e.target.value as Instrument })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                className={selectClass}
               >
                 {INSTRUMENTS.map((inst) => (
                   <option key={inst} value={inst}>{formatInstrument(inst)}</option>
@@ -173,11 +173,11 @@ export default function ContactForm({ lead, onClose, onSave }: ContactFormProps)
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">Source</label>
+              <label className={labelClass}>Source</label>
               <select
                 value={form.source}
                 onChange={(e) => setForm({ ...form, source: e.target.value as LeadSource })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                className={selectClass}
               >
                 {SOURCES.map((src) => (
                   <option key={src} value={src}>{formatSource(src)}</option>
@@ -189,11 +189,11 @@ export default function ContactForm({ lead, onClose, onSave }: ContactFormProps)
           {/* Phase + Status */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">Phase</label>
+              <label className={labelClass}>Phase</label>
               <select
                 value={form.phase}
                 onChange={(e) => setForm({ ...form, phase: e.target.value as Phase })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                className={selectClass}
               >
                 {PHASES.map((p) => (
                   <option key={p} value={p}>{formatPhase(p)}</option>
@@ -201,11 +201,11 @@ export default function ContactForm({ lead, onClose, onSave }: ContactFormProps)
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">Status</label>
+              <label className={labelClass}>Status</label>
               <select
                 value={form.status}
                 onChange={(e) => setForm({ ...form, status: e.target.value as Lead["status"] })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                className={selectClass}
               >
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
@@ -217,11 +217,11 @@ export default function ContactForm({ lead, onClose, onSave }: ContactFormProps)
           {/* Assigned To + Next Action */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">Assigned To</label>
+              <label className={labelClass}>Assigned To</label>
               <select
                 value={form.assignedTo}
                 onChange={(e) => setForm({ ...form, assignedTo: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                className={selectClass}
               >
                 {ASSIGNEES.map((a) => (
                   <option key={a} value={a}>{a}</option>
@@ -229,38 +229,38 @@ export default function ContactForm({ lead, onClose, onSave }: ContactFormProps)
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">Next Action Date</label>
+              <label className={labelClass}>Next Action Date</label>
               <input
                 type="date"
                 value={form.nextActionDate}
                 onChange={(e) => setForm({ ...form, nextActionDate: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+                className={inputClass}
               />
             </div>
           </div>
 
           {/* Tags */}
           <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-1">
-              Tags <span className="text-gray-400 font-normal">(comma-separated)</span>
+            <label className={labelClass}>
+              Tags <span className="text-gray-600 font-normal">(comma-separated)</span>
             </label>
             <input
               type="text"
               value={form.tags}
               onChange={(e) => setForm({ ...form, tags: e.target.value })}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C]"
+              className={inputClass}
               placeholder="trial-done, parent-contact"
             />
           </div>
 
           {/* Notes */}
           <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-1">Notes</label>
+            <label className={labelClass}>Notes</label>
             <textarea
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
               rows={3}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C] resize-none"
+              className={`${inputClass} resize-none`}
               placeholder="Any relevant notes about this student..."
             />
           </div>
@@ -270,14 +270,14 @@ export default function ContactForm({ lead, onClose, onSave }: ContactFormProps)
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              className="flex-1 px-4 py-2.5 border border-white/15 rounded-lg text-sm font-medium text-gray-400 hover:bg-white/5 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2.5 bg-[#DC143C] text-white rounded-lg text-sm font-medium hover:bg-[#B01030] transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2.5 bg-white text-black rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors disabled:opacity-50 uppercase tracking-wide"
             >
               {loading ? "Saving..." : lead ? "Save Changes" : "Create Contact"}
             </button>

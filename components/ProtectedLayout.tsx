@@ -19,14 +19,14 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
   if (!checked) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-black">
         <div className="w-8 h-8 border-2 border-[#DC143C] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black">
       <Sidebar />
       <main className="lg:pl-56 pt-14 lg:pt-0 min-h-screen">
         <div className="p-6">{children}</div>

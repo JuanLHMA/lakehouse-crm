@@ -122,18 +122,18 @@ export default function PipelinePage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Pipeline</h1>
+          <h1 className="text-2xl font-bold text-white">Pipeline</h1>
           <p className="text-sm text-gray-500 mt-0.5">
             {leads.length} leads across {PHASES.length} phases
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-lg px-3 py-2">
-            <Filter className="w-4 h-4 text-gray-400" />
+          <div className="flex items-center gap-1.5 bg-[#1A1A1A] border border-white/15 rounded-lg px-3 py-2">
+            <Filter className="w-4 h-4 text-gray-500" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-sm text-gray-700 bg-transparent focus:outline-none"
+              className="text-sm text-gray-300 bg-transparent focus:outline-none"
             >
               <option value="all">All statuses</option>
               <option value="active">Active</option>
@@ -143,7 +143,7 @@ export default function PipelinePage() {
           </div>
           <button
             onClick={() => setShowAddForm(true)}
-            className="flex items-center gap-2 bg-[#DC143C] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#B01030] transition-colors"
+            className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors uppercase tracking-wide"
           >
             <UserPlus className="w-4 h-4" />
             Add Lead

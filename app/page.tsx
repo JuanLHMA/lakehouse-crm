@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Music2, Eye, EyeOff, Lock } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -34,27 +34,37 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="bg-[#111111] rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
           {/* Header band */}
-          <div className="bg-[#DC143C] px-8 py-8 text-center">
-            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Music2 className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-white font-bold text-xl">Lakehouse CRM</h1>
-            <p className="text-white/70 text-sm mt-1">Music Academy Staff Portal</p>
+          <div className="px-8 py-10 text-center border-b border-white/10">
+            <h1
+              className="text-white text-4xl tracking-wider uppercase"
+              style={{ fontFamily: "var(--font-anton), Impact, sans-serif" }}
+            >
+              LAKEHOUSE
+            </h1>
+            <h2
+              className="text-white text-2xl tracking-widest uppercase"
+              style={{ fontFamily: "var(--font-anton), Impact, sans-serif" }}
+            >
+              CRM
+            </h2>
+            <p className="text-gray-500 text-xs mt-3 uppercase tracking-widest">
+              Music Academy · Staff Portal
+            </p>
           </div>
 
           {/* Form */}
           <div className="px-8 py-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-1">Sign in</h2>
+            <h2 className="text-lg font-bold text-white mb-1">Sign in</h2>
             <p className="text-sm text-gray-500 mb-5">Enter your staff password to continue</p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-600 mb-1.5">
+                <label className="block text-xs font-semibold text-gray-400 mb-1.5">
                   <Lock className="w-3.5 h-3.5 inline mr-1" />
                   Password
                 </label>
@@ -66,8 +76,8 @@ export default function LoginPage() {
                       setPassword(e.target.value);
                       setError("");
                     }}
-                    className={`w-full border rounded-lg px-3 py-2.5 text-sm pr-10 focus:outline-none focus:ring-2 focus:ring-[#DC143C]/20 focus:border-[#DC143C] transition-colors ${
-                      error ? "border-red-300 bg-red-50" : "border-gray-200"
+                    className={`w-full bg-black border rounded-lg px-3 py-2.5 text-sm pr-10 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#DC143C]/40 focus:border-[#DC143C] transition-colors ${
+                      error ? "border-[#DC143C]/60 bg-[#DC143C]/5" : "border-white/15"
                     }`}
                     placeholder="Enter password"
                     autoFocus
@@ -75,7 +85,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400 transition-colors"
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -85,18 +95,18 @@ export default function LoginPage() {
                   </button>
                 </div>
                 {error && (
-                  <p className="text-xs text-red-600 mt-1.5 font-medium">{error}</p>
+                  <p className="text-xs text-[#DC143C] mt-1.5 font-medium">{error}</p>
                 )}
               </div>
 
               <button
                 type="submit"
                 disabled={loading || !password}
-                className="w-full bg-[#DC143C] text-white rounded-lg px-4 py-2.5 text-sm font-semibold hover:bg-[#B01030] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-white text-black rounded-lg px-4 py-2.5 text-sm font-bold hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase tracking-wide"
               >
                 {loading ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
                     Signing in...
                   </>
                 ) : (
@@ -107,7 +117,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-gray-400 mt-4">
+        <p className="text-center text-xs text-gray-600 mt-4 uppercase tracking-widest">
           Lakehouse Music Academy · Staff Only
         </p>
       </div>
