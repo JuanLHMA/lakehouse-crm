@@ -4,7 +4,10 @@ import { createActivity } from "@/lib/data";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
 
-const FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL ?? "noreply@lhcrm.site";
+const FROM_EMAIL = {
+  email: process.env.SENDGRID_FROM_EMAIL ?? "welcome@lakehousemusicacademy.com",
+  name: "Lakehouse Music Academy",
+};
 
 interface SendEmailBody {
   to: string;
