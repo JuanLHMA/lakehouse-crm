@@ -92,17 +92,17 @@ export async function getLead(id: string): Promise<Lead | null> {
 export async function createLead(data: Omit<Lead, "id" | "createdAt" | "updatedAt">): Promise<Lead> {
   const leads = await getLeads();
   const now = new Date().toISOString();
-  const newLead: Lead = {
+  const newLead = {
     status: "active",
     phase: "assess",
     tags: [],
     lastContactDate: now,
     nextActionDate: now,
-    ...data,
+    ...(data as Partial<Lead>),
     id: uuidv4(),
     createdAt: now,
     updatedAt: now,
-  };
+  } as Lead;
   leads.push(newLead);
   await setArray(KEYS.leads, leads);
   return newLead;
