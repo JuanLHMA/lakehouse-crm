@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(leads);
   } catch (error) {
     console.error("GET /api/leads error:", error);
-    return NextResponse.json({ error: "Failed to fetch leads" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch leads", detail: String(error) }, { status: 500 });
   }
 }
 
