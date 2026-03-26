@@ -703,6 +703,15 @@ export async function createSequence(data: Omit<Sequence, "id">): Promise<Sequen
   return newSequence;
 }
 
+export async function updateSequence(id: string, data: Partial<Omit<Sequence, "id">>): Promise<Sequence | null> {
+  const sequences = await getSequences();
+  const index = sequences.findIndex((s) => s.id === id);
+  if (index === -1) return null;
+  sequences[index] = { ...sequences[index], ...data };
+  await setArray(KEYS.sequences, sequences);
+  return sequences[index];
+}
+
 // Analytics
 export async function getAnalytics(): Promise<AnalyticsData> {
   const leads = await getLeads();
