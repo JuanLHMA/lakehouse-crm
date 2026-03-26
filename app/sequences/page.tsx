@@ -18,6 +18,12 @@ export default function SequencesPage() {
   const [selectedLeadId, setSelectedLeadId] = useState("");
   const [sending, setSending] = useState(false);
 
+  const fetchLeads = () =>
+    fetch("/api/leads")
+      .then((r) => r.json() as Promise<Lead[]>)
+      .then(setLeads)
+      .catch(console.error);
+
   useEffect(() => {
     Promise.all([
       fetch("/api/sequences").then((r) => r.json() as Promise<Sequence[]>),
@@ -142,6 +148,7 @@ export default function SequencesPage() {
                         e.stopPropagation();
                         setSendModal({ sequenceId: seq.id, sequenceName: seq.name });
                         setSelectedLeadId("");
+                        fetchLeads();
                       }}
                       className="flex items-center gap-1 px-2.5 py-1.5 bg-[#DC143C]/10 text-[#DC143C] rounded-lg text-xs font-semibold hover:bg-[#DC143C]/20 transition-colors"
                     >
