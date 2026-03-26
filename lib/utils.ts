@@ -75,7 +75,8 @@ export function getUrgencyBorderClass(lead: Lead): string {
   return getPhaseBorderColor(lead.phase);
 }
 
-export function formatPhase(phase: Phase): string {
+export function formatPhase(phase: Phase | undefined | null): string {
+  if (!phase) return "Unknown";
   return phase.charAt(0).toUpperCase() + phase.slice(1);
 }
 

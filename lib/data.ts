@@ -93,6 +93,11 @@ export async function createLead(data: Omit<Lead, "id" | "createdAt" | "updatedA
   const leads = await getLeads();
   const now = new Date().toISOString();
   const newLead: Lead = {
+    status: "active",
+    phase: "assess",
+    tags: [],
+    lastContactDate: now,
+    nextActionDate: now,
     ...data,
     id: uuidv4(),
     createdAt: now,
