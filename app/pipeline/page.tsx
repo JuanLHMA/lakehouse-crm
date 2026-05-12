@@ -9,7 +9,9 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  closestCorners,
+  pointerWithin,
+  rectIntersection,
+  type CollisionDetection,
 } from "@dnd-kit/core";
 import { UserPlus, Filter } from "lucide-react";
 import ProtectedLayout from "@/components/ProtectedLayout";
@@ -51,6 +53,19 @@ export default function PipelinePage() {
     })
   );
 
+  // Kanban drops need to land on the right column even when:
+  //  - target column is empty (no sortable cards to attract closestCorners)
+  //  - another column (e.g. Activate with 689 cards) has a huge bounding box
+  //    that would otherwise be the closest corner from anywhere on screen.
+  // Use pointerWithin (pointer must be inside a droppable) and fall back to
+  // rectIntersection only if the pointer isn't directly over any column.
+  const collisionDetection: CollisionDetection = (args) => {
+    const pointerHits = pointerWithin(args);
+    if (pointerHits.length > 0) return pointerHits;
+    const rectHits = rectIntersection(args);
+    return rectHits.length > 0 ? rectHits : [];
+  };
+
   const handleDragStart = (event: DragStartEvent) => {
     const lead = leads.find((l) => l.id === event.active.id);
     setActiveLead(lead ?? null);
@@ -63,7 +78,21 @@ export default function PipelinePage() {
     if (!over) return;
 
     const leadId = active.id as string;
-    const newPhase = over.id as Phase;
+    const overId = over.id as string;
+
+    // over.id is the column phase only when the drop lands on an empty column.
+    // If the column has cards, closestCorners returns the nearest card's UUID;
+    // resolve it to that card's phase so we move to the right column instead
+    // of corrupting `phase` with a UUID.
+    const phaseSet = PHASES as readonly string[];
+    let newPhase: Phase;
+    if (phaseSet.includes(overId)) {
+      newPhase = overId as Phase;
+    } else {
+      const overLead = leads.find((l) => l.id === overId);
+      if (!overLead) return;
+      newPhase = overLead.phase;
+    }
 
     const lead = leads.find((l) => l.id === leadId);
     if (!lead || lead.phase === newPhase) return;
@@ -159,7 +188,7 @@ export default function PipelinePage() {
         <div className="overflow-x-auto pb-4">
           <DndContext
             sensors={sensors}
-            collisionDetection={closestCorners}
+            collisionDetection={collisionDetection}
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
           >

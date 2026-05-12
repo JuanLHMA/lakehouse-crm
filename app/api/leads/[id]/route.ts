@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getLead, updateLead, deleteLead } from "@/lib/data";
-import type { Lead } from "@/lib/types";
+import type { Lead, Phase } from "@/lib/types";
+import { PHASES } from "@/lib/types";
+
+const VALID_PHASES = new Set<string>(PHASES);
 
 export async function GET(
   _request: NextRequest,
@@ -26,6 +29,12 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json() as Partial<Lead>;
+    if (body.phase !== undefined && !VALID_PHASES.has(body.phase as Phase)) {
+      return NextResponse.json(
+        { error: `Invalid phase: ${body.phase}. Must be one of ${PHASES.join(", ")}.` },
+        { status: 400 }
+      );
+    }
     const lead = await updateLead(id, body);
     if (!lead) {
       return NextResponse.json({ error: "Lead not found" }, { status: 404 });
