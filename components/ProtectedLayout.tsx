@@ -13,6 +13,8 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     if (!auth) {
       router.replace("/");
     } else {
+      // TODO(M1): remove with the localStorage auth scheme when Auth.js lands.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setChecked(true);
     }
   }, [router]);

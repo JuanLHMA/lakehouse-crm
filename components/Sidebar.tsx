@@ -9,6 +9,7 @@ import {
   Users,
   Mail,
   BarChart3,
+  Settings,
   LogOut,
   Menu,
   X,
@@ -21,19 +22,19 @@ const navItems = [
   { href: "/contacts", label: "Contacts", icon: Users },
   { href: "/sequences", label: "Sequences", icon: Mail },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-export default function Sidebar() {
-  const pathname = usePathname();
-  const router = useRouter();
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleLogout = () => {
-    localStorage.removeItem("lh-auth");
-    router.push("/");
-  };
-
-  const NavContent = () => (
+function NavContent({
+  pathname,
+  onLinkClick,
+  onLogout,
+}: {
+  pathname: string;
+  onLinkClick: () => void;
+  onLogout: () => void;
+}) {
+  return (
     <>
       {/* Logo */}
       <div className="px-6 py-5 border-b border-white/10">
@@ -67,7 +68,7 @@ export default function Sidebar() {
             <Link
               key={href}
               href={href}
-              onClick={() => setMobileOpen(false)}
+              onClick={onLinkClick}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
                 isActive
@@ -85,7 +86,7 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="px-3 py-4 border-t border-white/10">
         <button
-          onClick={handleLogout}
+          onClick={onLogout}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:bg-white/10 hover:text-white transition-all w-full"
         >
           <LogOut className="w-4 h-4" />
@@ -94,12 +95,29 @@ export default function Sidebar() {
       </div>
     </>
   );
+}
+
+export default function Sidebar() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("lh-auth");
+    router.push("/");
+  };
+
+  const closeMobile = () => setMobileOpen(false);
 
   return (
     <>
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex flex-col w-56 bg-black border-r border-white/10 min-h-screen fixed left-0 top-0 z-30">
-        <NavContent />
+        <NavContent
+          pathname={pathname}
+          onLinkClick={closeMobile}
+          onLogout={handleLogout}
+        />
       </aside>
 
       {/* Mobile header */}
@@ -126,7 +144,11 @@ export default function Sidebar() {
             onClick={() => setMobileOpen(false)}
           />
           <aside className="absolute left-0 top-0 bottom-0 w-56 bg-black border-r border-white/10 flex flex-col">
-            <NavContent />
+            <NavContent
+              pathname={pathname}
+              onLinkClick={closeMobile}
+              onLogout={handleLogout}
+            />
           </aside>
         </div>
       )}
