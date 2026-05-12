@@ -1,4 +1,11 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lakehouse CRM
+
+Staff-facing CRM for Lakehouse Music Academy. See [docs/PLAN.md](docs/PLAN.md) for vision, architecture, current state, and roadmap.
+
+## Project docs
+
+- **[docs/PLAN.md](docs/PLAN.md)** — what we're building, what's built, what's next
+- **[docs/ENV.md](docs/ENV.md)** — environment variables and local setup
 
 ## Getting Started
 
